@@ -1,23 +1,47 @@
-import logo from './logo.svg';
 import './App.css';
+import Task from "./Task";
+
+const tasksData = [
+    {
+        id: 1,
+        content: "do homework",
+        isCompleted: false
+    },
+    {
+        id: 2,
+        content: "do workout",
+        isCompleted: true
+    },
+    {
+        id: 3,
+        content: "read book soadkjfds;oj ;skdja pfojap sdojafposd jpaosfj paosidjfpo asijp",
+        isCompleted: false
+    }
+]
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    const tasks = tasksData.map(taskData =>
+        <Task id={taskData.id} content={taskData.content} isCompleted={taskData.isCompleted}/>
+    )
+
+    return (
+    <div className="main">
+      <nav className="header">
+
+      </nav>
+
+      <div className="todo-wrapper">
+          <div className="todo-main">
+              <div className="list-header">
+                  <button className="btn add-task-btn">Add New Task</button>
+              </div>
+              <div className="todo-list">
+                  {tasks}
+              </div>
+          </div>
+      </div>
+
+      <nav className="footer"></nav>
     </div>
   );
 }
