@@ -1,0 +1,12 @@
+.add-task{
+    width: 100%;
+    font-size: 25px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.textarea-field{
+    width: 80%;
+    resize: none;
+    font-size: 20px;
+}

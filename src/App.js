@@ -1,49 +1,56 @@
 import './App.css';
+import {useEffect, useState} from "react";
 import Task from "./Task";
+import AddTask from "./forms/AddTask";
 
-const tasksData = [
-    {
-        id: 1,
-        content: "do homework",
-        isCompleted: false
-    },
-    {
-        id: 2,
-        content: "do workout",
-        isCompleted: true
-    },
-    {
-        id: 3,
-        content: "read book soadkjfds;oj ;skdja pfojap sdojafposd jpaosfj paosidjfpo asijp",
-        isCompleted: false
-    }
-]
 
 function App() {
+    const [tasksData, setTasksData] = useState([])
+    const [refresh] = useState(false);
+    const [addingTask, setAddingTask] = useState(false);
+
+
+    console.log(tasksData)
+    useEffect(()=>{
+        const fetchTasks = async () => {
+            const res = await fetch('http://localhost:8080/tasks');
+            const getData = await res.json();
+            setTasksData(getData);
+        }
+        fetchTasks().then(r => console.log(r));
+    }, [refresh])
+
     const tasks = tasksData.map(taskData =>
-        <Task id={taskData.id} content={taskData.content} isCompleted={taskData.isCompleted}/>
+        <Task key={taskData.id} id={taskData.id} content={taskData.content} isCompleted={taskData.isCompleted}/>
     )
 
+    function addTaskHandler() {
+        setAddingTask(prevState => !prevState);
+    }
+
     return (
-    <div className="main">
-      <nav className="header">
+        <div className="main">
+            <nav className="header">
 
-      </nav>
+            </nav>
 
-      <div className="todo-wrapper">
-          <div className="todo-main">
-              <div className="list-header">
-                  <button className="btn add-task-btn">Add New Task</button>
-              </div>
-              <div className="todo-list">
-                  {tasks}
-              </div>
-          </div>
-      </div>
+            <div className="todo-wrapper">
+                <div className="todo-main">
+                    <div className="list-header">
+                        <button className="btn add-task-btn" onClick={addTaskHandler}>Add New Task</button>
+                    </div>
+                    <div className="add-task-wrapper">
+                        {addingTask && <AddTask />}
+                    </div>
+                    <div className="todo-list">
+                        {tasks}
+                    </div>
+                </div>
+            </div>
 
-      <nav className="footer"></nav>
-    </div>
-  );
+            <nav className="footer"></nav>
+        </div>
+    );
 }
 
 export default App;
