@@ -7,6 +7,7 @@
 }
 .task-text{
     flex-basis: 70%;
+    font-size: 25px;
 }
 .close {
     width: 32px;
@@ -42,7 +43,7 @@
 }
 
 .check:hover{
-    background-color: #0101b4;
+    background-color: #4d4dce;
 }
 
 .check {
@@ -55,5 +56,5 @@
     transition: background .2s; /* For modern browsers */
 }
 .active{
-    background-color: darkblue;
+    background-color: darkblue !important;
 }

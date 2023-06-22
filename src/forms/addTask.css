@@ -1,12 +1,23 @@
 .add-task{
     width: 100%;
     font-size: 25px;
+    padding: 20px;
+}
+
+.add-task-line{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.add-task label{
+    margin-right: 1em;
+    display: flex;
+    align-items: center;
 }
 
 .textarea-field{
-    width: 80%;
+    width: 100%;
     resize: none;
     font-size: 20px;
 }

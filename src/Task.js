@@ -1,6 +1,7 @@
 import './Task.css'
 import {useState} from "react";
 import axios from "axios";
+import {nanoid} from "nanoid";
 
 function Task(props) {
     const [task, changeTask] = useState({id: props.id, content: props.content, isCompleted: props.isCompleted});
@@ -11,6 +12,7 @@ function Task(props) {
         })
             .then(response => console.log(response.data))
             .catch(error => console.error(error))
+        console.log()
     };
 
     function handleChangeCompleteState() {
