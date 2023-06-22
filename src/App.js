@@ -1,5 +1,5 @@
 import './App.css';
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import Task from "./Task";
 import AddTask from "./forms/AddTask";
 import {nanoid} from "nanoid";
@@ -8,9 +8,10 @@ import {Tasks} from "./DataObjects/Tasks";
 
 function App() {
     const [tasksDataJSON, setTasksDataJSON] = useState([])
-    const [ setRefresh] = useState(false);
+    // eslint-disable-next-line no-unused-vars
+    const [refresh, setRefresh] = useState(false);
     const [addingTask, setAddingTask] = useState(false);
-    const sharedTasks = new Tasks();
+    const sharedTasks = useMemo(() => new Tasks(), []);
 
 
     useEffect(()=>{
@@ -33,7 +34,7 @@ function App() {
         }
         console.log("fetch one more timed")
         fetchTasks().then(r=> console.log(r));
-    }, [sharedTasks])
+    }, )
 
     const tasks = tasksDataJSON.map(taskData =>
         <Task key={taskData.id} id={taskData.id} content={taskData.content} isCompleted={taskData.isCompleted} />
