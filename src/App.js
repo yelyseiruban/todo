@@ -8,20 +8,31 @@ import {Tasks} from "./DataObjects/Tasks";
 
 function App() {
     const [tasksDataJSON, setTasksDataJSON] = useState([])
-    const [refresh, setRefresh] = useState(false);
+    const [ setRefresh] = useState(false);
     const [addingTask, setAddingTask] = useState(false);
     const sharedTasks = new Tasks();
 
 
     useEffect(()=>{
         const fetchTasks = async () => {
-            const res = await fetch('http://localhost:8080/tasks');
-            const getData = await res.json();
-            await sharedTasks.setTasksObjects(getData);
-            setTasksDataJSON(sharedTasks.tasks);
+            fetch('http://localhost:8080/tasks').then( response => {
+                if (!response.ok){
+                    throw new Error('Failed to fetch resource: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(async data => {
+                await sharedTasks.setTasksObjects(data);
+                setTasksDataJSON(sharedTasks.tasks);
+            })
+            .catch(error => {
+                console.log("Failed to fetch resource");
+                console.error('Error:', error);
+            });
 
         }
-        fetchTasks().then(r => console.log(r));
+        console.log("fetch one more timed")
+        fetchTasks().then(r=> console.log(r));
     }, [sharedTasks])
 
     const tasks = tasksDataJSON.map(taskData =>
