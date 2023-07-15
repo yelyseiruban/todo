@@ -6,12 +6,14 @@ import {nanoid} from "nanoid";
 import {Tasks} from "../DataObjects/Tasks";
 import {getNextId} from "../getNextId";
 import axios from "axios";
-function AddTask(props) {
+function AddTask() {
+    console.log('2');
     const [taskText, setTaskText] = useState('');
     const [errors, setErrors] = useState([]);
     const sharedTasks = new Tasks()
 
     const handleChange = event => {
+        console.log(taskText)
         setTaskText(event.target.value);
     };
 
@@ -22,6 +24,7 @@ function AddTask(props) {
             !errors.some(item => item instanceof ValidationError) &&
             setErrors(prevState => [...prevState, new ValidationError("Field Task Text must be filled before proceeding")]);
         } else {
+            console.log(sharedTasks)
             const nextId = getNextId(sharedTasks.tasks);
             console.log(nextId);
             const taskJSON = { id: nextId, content: taskText, isCompleted: false };
@@ -41,7 +44,6 @@ function AddTask(props) {
                         console.log('Error during request setup:', error.message);
                     }
                 });
-            props.addHanlder();
         }
 
     };

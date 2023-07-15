@@ -1,53 +1,32 @@
 import './App.css';
-import {useEffect, useMemo, useState} from "react";
+import {useEffect, useState} from "react";
 import Task from "./Task";
 import AddTask from "./forms/AddTask";
 import {nanoid} from "nanoid";
-import {Tasks} from "./DataObjects/Tasks";
+import {useSelector, useDispatch} from "react-redux";
+import {fetchTasks} from "./redux/tasks"
 
 
 function App() {
-    const [tasksDataJSON, setTasksDataJSON] = useState([])
-    // eslint-disable-next-line no-unused-vars
-    const [refresh, setRefresh] = useState(false);
     const [addingTask, setAddingTask] = useState(false);
-    const sharedTasks = useMemo(() => new Tasks(), []);
 
+    const dispatch = useDispatch();
+    const tasks = useSelector(state => state.tasks.data);
 
-    useEffect(()=>{
-        const fetchTasks = async () => {
-            fetch('http://localhost:8080/tasks').then( response => {
-                if (!response.ok){
-                    throw new Error('Failed to fetch resource: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(async data => {
-                await sharedTasks.setTasksObjects(data);
-                setTasksDataJSON(sharedTasks.tasks);
-            })
-            .catch(error => {
-                console.log("Failed to fetch resource");
-                console.error('Error:', error);
-            });
+    useEffect(() => {
+        dispatch(fetchTasks());
+    }, []);
 
-        }
-        console.log("fetch one more timed")
-        fetchTasks().then(r=> console.log(r));
-    }, )
+    let taskComponents = [];
 
-    const tasks = tasksDataJSON.map(taskData =>
-        <Task key={taskData.id} id={taskData.id} content={taskData.content} isCompleted={taskData.isCompleted} />
-    )
-
-    function addHandler(){
-        console.log("Hello")
-        console.log(sharedTasks);
-        setTasksDataJSON(sharedTasks.tasks);
-        setRefresh(prevState => !prevState);
+    if (tasks !== undefined) {
+        taskComponents = tasks.map(taskData =>
+            <Task key={taskData.id} id={taskData.id} content={taskData.content} isCompleted={taskData.isCompleted}/>
+        )
     }
+
     function addTaskHandler() {
-        setAddingTask(prevState => !prevState);
+        setAddingTask(state => !state);
     }
 
     return (
@@ -62,10 +41,10 @@ function App() {
                         <button className="btn add-task-btn" onClick={addTaskHandler}>Add New Task</button>
                     </div>
                     <div className="add-task-wrapper">
-                        {addingTask && <AddTask key={nanoid()} addHanlder={addHandler}/>}
+                        {addingTask && <AddTask key={nanoid()}/>}
                     </div>
                     <div className="todo-list">
-                        {tasks}
+                        {taskComponents}
                     </div>
                 </div>
             </div>

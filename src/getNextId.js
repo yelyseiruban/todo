@@ -2,5 +2,5 @@
 export function getNextId(tasks){
     tasks.sort((a, b) => a.age - b.age);
 
-    return tasks[tasks.length-1].id + 1;
+    return tasks.length === 0 ? 0 : tasks[tasks.length-1].id + 1;
 }

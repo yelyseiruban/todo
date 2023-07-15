@@ -14,7 +14,7 @@ export class Tasks{
         return Tasks.instance;
     }
 
-    async setTasksObjects(tasksJSON){
+    setTasksObjects(tasksJSON){
         const tasks = []
         tasksJSON.forEach(taskJSON => tasks.push(this.transformSingleJSONToTask(taskJSON)));
         this.tasks = tasks;
